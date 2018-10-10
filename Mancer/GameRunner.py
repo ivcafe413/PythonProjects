@@ -49,7 +49,7 @@ class GameRunner:
 		for event in pygame.event.get(): #To prevent OS from locking up
 			if event.type == pygame.QUIT:
 				pygame.quit()
-				sys.exit(0)
+				sys.exit()
 			elif event.type == pygame.KEYDOWN:
 				for handler in self.keydown_handlers[event.key]:
 					handler(event.key)
@@ -64,18 +64,17 @@ class GameRunner:
 
 	def run(self):
 		while True:
-			self.elapsedTime += self.runnerClock.get_time()
-			# if self.elapsedTime >= (self.RENDER_MS_PF):
+			self.elapsedTime += self.runnerClock.get_time() # Time since last tick
 			
 			self.handle_events()
 			
-			#possibility of variable update time frame to 'learn' and balance update speed real-time
+			# possibility of variable update time frame to 'learn' and balance update speed real-time
 			# if not self.state.paused:
-			while self.elapsedTime >= LOOP_MS_PF:
-				if(self.elapsedTime >= (LOOP_MS_PF * 2)):
-					logging.warning("Lag Frame: {0:n} over {1:n}".format(self.elapsedTime - LOOP_MS_PF, LOOP_MS_PF))
+			while self.elapsedTime >= LOOP_MS_PF: # lag > time per update
+				if(self.elapsedTime >= (LOOP_MS_PF * 2)): # if multiple update frames this times
+					logging.warning("Lag Frame: {0:n} over {1:n}".format(self.elapsedTime - (LOOP_MS_PF * 2), LOOP_MS_PF))
 				self.gameState.update() #TODO: Passing in update MS?
-				self.elapsedTime -= LOOP_MS_PF
+				self.elapsedTime -= LOOP_MS_PF # decrement the lag
 			
 			self.gameRenderer.render() #TODO: passing in leftover elapsed time over Render MS for % for render extrapolation
 			self.clockFrame()
