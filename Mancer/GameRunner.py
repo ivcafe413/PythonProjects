@@ -45,6 +45,9 @@ class GameRunner:
 		self.keyup_handlers[pygame.K_DOWN].append(player.handle)
 		self.gameState.gameObjects.append(player)
 
+		# initial battle trigger setup
+		# trigger = Trigger(200, 300, 20, 20, (0, 0, 0))
+
 	def handle_events(self):
 		for event in pygame.event.get(): #To prevent OS from locking up
 			if event.type == pygame.QUIT:
