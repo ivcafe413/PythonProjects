@@ -8,6 +8,7 @@ import Config as c
 from Game import Game
 from GameRenderer import GameRenderer
 from Vagrant import Vagrant
+from Trigger import Trigger
 
 # Game runner CONSTANTS
 TARGET_FPS = 60
@@ -46,13 +47,14 @@ class GameRunner:
 		self.gameState.gameObjects.append(player)
 
 		# initial battle trigger setup
-		# trigger = Trigger(200, 300, 20, 20, (0, 0, 0))
+		trigger = Trigger(200, 300, 20, 20, (0, 0, 0))
+		self.gameState.gameObjects.append(trigger)
 
 	def handle_events(self):
 		for event in pygame.event.get(): #To prevent OS from locking up
 			if event.type == pygame.QUIT:
 				pygame.quit()
-				sys.exit()
+				# sys.exit()
 			elif event.type == pygame.KEYDOWN:
 				for handler in self.keydown_handlers[event.key]:
 					handler(event.key)
