@@ -1,0 +1,8 @@
+Quad Tree requirements:
+
+Contains list of objects within the quad.
+All objects in quad should exist within physical bounds of the quad.
+Quad has a threshold.
+Quad should subdivide into 4 child quads if object threshold is broken.
+
+Rects are unhashable types in py, GameObject containing Rect is not
