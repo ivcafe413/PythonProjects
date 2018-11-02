@@ -1,5 +1,7 @@
 from pygame.rect import Rect
 
+from GameObject import GameObject
+
 THRESHOLD = 10 # Threshold of game objects to split tree
 
 class QuadTree:
@@ -11,8 +13,12 @@ class QuadTree:
     def insert(self, obj):
         """Add object to the tree."""
         # Need to raise an exception when object is out-of-bounds
+
+        if not isinstance(obj, GameObject):
+            raise Exception("Can only insert GameObject types into QuadTrees")
+
         if not ObjectWithinBounds(obj, self.bounds):
-            raise Exception("Object out of bounds")
+            raise Exception("Cannot insert Object out of bounds")
             
         if self.isLeaf:
             # Leaf node, add obj to self

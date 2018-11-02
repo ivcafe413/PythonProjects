@@ -86,7 +86,7 @@ class GameRunner:
 		
 def main():
 	#TODO: Set logging level based on config
-	logging.basicConfig(level=logging.INFO)
+	#logging.basicConfig(level=logging.INFO)
 	GameRunner().run()
 	
 if __name__ == '__main__':

@@ -2,7 +2,7 @@ import pygame
 import sys
 import logging
 
-from CollisionDetection.QuadTree import *
+from CollisionDetection.QuadTree import QuadTree
 
 class Game:
 	def __init__(self, width, height):
@@ -17,4 +17,8 @@ class Game:
 			
 		for o in self.gameObjects:
 			collidables = self.quadTree.getCollidableObjects(o)
-			# TODO: For each collidable, Check for collision against o
+			# For each collidable, Check for collision against o
+			for c in collidables:
+				if o.bounds.colliderect(c.bounds):
+					# Collision detected
+					pass
