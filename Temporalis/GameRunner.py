@@ -9,8 +9,8 @@ import Config as c
 from Game import Game
 from GameRenderer import GameRenderer
 from EventHandler import EventHandler
-from Player import Player
-from Trigger import Trigger
+from GameObjects.Player import Player
+# from Trigger import Trigger
 
 from Constants.EventHandlerConstants import *
 
@@ -42,8 +42,8 @@ class GameRunner:
 		self.gameState.gameObjects.append(player1)
 
 		# initial battle trigger setup
-		trigger = Trigger(200, 300, 20, 20, (0, 0, 0))
-		self.gameState.gameObjects.append(trigger)
+		# trigger = Trigger(200, 300, 20, 20, (0, 0, 0))
+		# self.gameState.gameObjects.append(trigger)
 
 		# Event register initial state
 		self.eventHandler.configure_handlers(TOWN_NAV)

@@ -7,7 +7,7 @@ import random
 from os import path
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
-from GameObject import GameObject
+from GameObjects.TestGameObject import TestGameObject
 from CollisionDetection.QuadTree import QuadTree
 from CollisionDetection.Algorithms import CollideRectTest
 
@@ -24,7 +24,7 @@ class QuadTreeCollisionPerformanceTests(unittest.TestCase):
     def test_basic_quad_tree_performance(self):
         collisions = []
         for i in range(100):
-            obj = GameObject(random.randint(0, 800), random.randint(0, 600), 20, 20)
+            obj = TestGameObject(random.randint(0, 800), random.randint(0, 600), 20, 20)
             self.gameObjects.append(obj)
             self.quadTree.insert(obj)
 

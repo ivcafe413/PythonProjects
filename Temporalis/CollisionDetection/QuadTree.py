@@ -1,6 +1,6 @@
 from pygame.rect import Rect
 
-from GameObject import GameObject
+from GameObjects.GameObject import GameObject
 
 THRESHOLD = 10 # Threshold of game objects to split tree
 

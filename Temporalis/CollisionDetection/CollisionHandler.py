@@ -1,11 +1,12 @@
 import numpy as np
 
 def CollisionHandler(game, obj1, obj2):
-    print("Collision")
-    print(type(obj1))
-    print(type(obj2))
+    # print("Collision")
+    # type1 = type(obj1)
+    # type2 = type(obj2)
 
-    # TODO: Need to determine the moveable/immoveable object
+    # Need to determine the moveable/immoveable object
+    
 
     # Calculate collision vector b = c - a (two origin vectors)
     a = np.asarray(obj1.center)

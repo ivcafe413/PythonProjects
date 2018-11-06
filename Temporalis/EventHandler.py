@@ -4,7 +4,7 @@ import logging
 from pygame.locals import *
 from collections import defaultdict
 
-from Player import Player
+from GameObjects.Player import Player
 from Constants.UserEvents import *
 from CollisionDetection.CollisionHandler import CollisionHandler
 
@@ -18,6 +18,7 @@ def __town_navigation_handler_configuration__(self):
     if not player1:
         raise Exception("No player object to key bind to")
 
+    # Input handling
     # Keydown handling
     self.keydown_handlers[K_LEFT].append(player1.handle)
     self.keydown_handlers[K_RIGHT].append(player1.handle)
@@ -34,7 +35,7 @@ def __town_navigation_handler_configuration__(self):
     self.event_handlers[COLLISION].append(CollisionHandler)
 
 __switcher__ = {
-    1: __town_navigation_handler_configuration__
+    1: __town_navigation_handler_configuration__ #TOWN_NAV
 }
 
 class EventHandler:
@@ -47,9 +48,6 @@ class EventHandler:
         self.keydown_handlers = defaultdict(list)
         self.keyup_handlers = defaultdict(list)
         self.event_handlers = defaultdict(list)
-
-        # Default state
-        # self.get_handler_configuration(TOWN_NAV)
 
     def clear_handlers(self):
         self.keydown_handlers.clear()
@@ -65,6 +63,7 @@ class EventHandler:
         self.get_handler_configuration(state)
 
     def handle_events(self):
+        #TODO: Re-implement queue handling with mulitple consumers
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()

@@ -1,9 +1,10 @@
 from pygame.rect import Rect
+from abc import ABC, abstractmethod
  
-class GameObject:
-    def __init__(self, x, y, w, h, speed=(0,0)):
+class GameObject(ABC):
+    @abstractmethod
+    def __init__(self, x, y, w, h):
         self.bounds = Rect(x - w/2, y - h/2, w, h) # Center on (x,y)
-        self.speed = speed
  
     @property
     def left(self):
@@ -41,14 +42,12 @@ class GameObject:
     def centery(self):
         return self.bounds.centery
  
+    @abstractmethod
     def draw(self, surface):
+        """"""
         pass
- 
-    def move(self, dx, dy):
-        self.bounds = self.bounds.move(dx, dy)
- 
+    
+    @abstractmethod
     def update(self):
-        if self.speed == [0, 0]:
-            return
- 
-        self.move(*self.speed)
+        """"""
+        pass

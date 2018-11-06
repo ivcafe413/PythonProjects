@@ -2,17 +2,14 @@ import pygame
 from pygame.locals import *
 
 import Config as c
-from GameObject import GameObject
 
-class Player(GameObject): #Subclass definition
+from GameObjects.Moveable import Moveable
+
+class Player(Moveable): #Subclass definition
 	def __init__(self, x, y, w, h, color, speed):
-		GameObject.__init__(self, x, y, w, h)
+		super().__init__(x, y, w, h, speed)
+
 		self.color = color
-		self.speed = speed
-		self.moving_left = False
-		self.moving_right = False
-		self.moving_up = False
-		self.moving_down = False
 		
 	def draw(self, surface):
 		pygame.draw.rect(surface, self.color, self.bounds)
@@ -34,7 +31,7 @@ class Player(GameObject): #Subclass definition
 			#dx = -(self.left)
 			moving = True
 		elif self.moving_right:
-			dx = min(self.speed, c.screen_width - self.right) #
+			dx = min(self.speed, c.screen_width - self.right)
 			moving = True
 		if self.moving_up:
 			#dy = -(self.top)
