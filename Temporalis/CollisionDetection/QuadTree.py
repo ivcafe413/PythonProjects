@@ -10,6 +10,14 @@ class QuadTree:
         self.children = []
         self.bounds = Rect(x, y, w, h)
 
+    @property
+    def x(self):
+        return self.bounds.x
+
+    @property
+    def y(self):
+        return self.bounds.y
+
     def insert(self, obj):
         """Add object to the tree."""
         # Need to raise an exception when object is out-of-bounds
@@ -32,6 +40,16 @@ class QuadTree:
             for t in self.children:
                 if ObjectWithinBounds(obj, t.bounds):
                     t.insert(obj)
+                    return
+
+    def remove(self, obj):
+        """Remove object from the tree."""
+        if self.isLeaf:
+            self.objects.remove(obj)
+        else:
+            for t in self.children:
+                if ObjectWithinBounds(obj, t.bounds):
+                    t.remove(obj)
                     return
 
     def clear(self):

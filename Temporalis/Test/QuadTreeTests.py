@@ -1,6 +1,7 @@
 import sys
 import logging
 import unittest
+import random
 
 from os import path
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
@@ -26,11 +27,35 @@ class QuadTreeTest(unittest.TestCase):
 
         self.assertTrue(obj in self.quadTree.objects, "object in list")
         self.assertTrue(ObjectWithinBounds(obj, self.quadTree.bounds), "object in bounds")
+
+    def test_insert_object_near_threshold(self):
+        obj = GameObject(799, 599, 20, 20)
+        self.quadTree.insert(obj)
+
+        self.assertTrue(obj in self.quadTree.objects, "object in list")
+        self.assertTrue(ObjectWithinBounds(obj, self.quadTree.bounds), "object in bounds")
+
+    def test_insert_object_on_threshold(self):
+        obj = GameObject(800, 600, 20, 20)
+        self.quadTree.insert(obj)
+
+        self.assertTrue(obj in self.quadTree.objects, "object in list")
+        self.assertTrue(ObjectWithinBounds(obj, self.quadTree.bounds), "object in bounds")
+
+    @unittest.expectedFailure
+    def test_fail_insert_object_barely_outside_threshold(self):
+        obj = GameObject(801, 300, 20, 20)
+        self.quadTree.insert(obj) # Should throw exception
     
     @unittest.expectedFailure
     def test_fail_insert_object_outside_threshold(self):
         obj = GameObject(1000, 1000, 20, 20)
         self.quadTree.insert(obj) # Should throw exception
+
+    def test_subdivision(self):
+        for i in range(20):
+            obj = GameObject(random.randint(0, 800), random.randint(0, 600), 20, 20)
+            self.quadTree.insert(obj)
 
     def test_get_collidables_without_self(self):
         """Test returning the list of collidables without returning self in the list so that self is not compared for collision"""

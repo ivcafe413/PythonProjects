@@ -1,0 +1,3 @@
+from pygame import USEREVENT
+
+COLLISION = USEREVENT + 1

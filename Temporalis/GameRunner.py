@@ -2,13 +2,17 @@ import sys
 import logging
 import pygame
 
-from collections import defaultdict
+from pygame.locals import *
 
 import Config as c
+
 from Game import Game
 from GameRenderer import GameRenderer
-from Vagrant import Vagrant
+from EventHandler import EventHandler
+from Player import Player
 from Trigger import Trigger
+
+from Constants.EventHandlerConstants import *
 
 # Game runner CONSTANTS
 TARGET_FPS = 60
@@ -17,7 +21,8 @@ LOOP_MS_PF = (1 / TARGET_FPS) * 1000
 class GameRunner:
 	"""Game Runner wraps Game state and handles game loop management"""
 	def __init__(self):
-		pygame.init() #
+		logging.basicConfig(level=logging.DEBUG)
+		pygame.init()
 
 		# Main game state object
 		self.gameState = Game(c.screen_width, c.screen_height)
@@ -25,42 +30,23 @@ class GameRunner:
 		# Game renderer
 		self.gameRenderer = GameRenderer(self.gameState, c.screen_width, c.screen_height)
 
-		# Event handlers
-		self.keydown_handlers = defaultdict(list)
-		self.keyup_handlers = defaultdict(list)
+		# Event Handler
+		self.eventHandler = EventHandler(self.gameState)
 
 		# Game runner properties
 		self.runnerClock = pygame.time.Clock()
 		self.elapsedTime = 0
 		
 		# initial state setup
-		player = Vagrant(400, 300, 20, 20, (128, 128, 128), 5)
-		self.keydown_handlers[pygame.K_LEFT].append(player.handle)
-		self.keydown_handlers[pygame.K_RIGHT].append(player.handle)
-		self.keydown_handlers[pygame.K_UP].append(player.handle)
-		self.keydown_handlers[pygame.K_DOWN].append(player.handle)
-
-		self.keyup_handlers[pygame.K_LEFT].append(player.handle)
-		self.keyup_handlers[pygame.K_RIGHT].append(player.handle)
-		self.keyup_handlers[pygame.K_UP].append(player.handle)
-		self.keyup_handlers[pygame.K_DOWN].append(player.handle)
-		self.gameState.gameObjects.append(player)
+		player1 = Player(400, 300, 20, 20, (128, 128, 128), 5)
+		self.gameState.gameObjects.append(player1)
 
 		# initial battle trigger setup
 		trigger = Trigger(200, 300, 20, 20, (0, 0, 0))
 		self.gameState.gameObjects.append(trigger)
 
-	def handle_events(self):
-		for event in pygame.event.get(): #To prevent OS from locking up
-			if event.type == pygame.QUIT:
-				pygame.quit()
-				# sys.exit()
-			elif event.type == pygame.KEYDOWN:
-				for handler in self.keydown_handlers[event.key]:
-					handler(event.key)
-			elif event.type == pygame.KEYUP:
-				for handler in self.keyup_handlers[event.key]:
-					handler(event.key)
+		# Event register initial state
+		self.eventHandler.configure_handlers(TOWN_NAV)
 		
 	def clockFrame(self):
 		fps = self.runnerClock.get_fps()
@@ -71,14 +57,14 @@ class GameRunner:
 		while True:
 			self.elapsedTime += self.runnerClock.get_time() # Time since last tick
 			
-			self.handle_events()
-			
 			# possibility of variable update time frame to 'learn' and balance update speed real-time
 			# if not self.state.paused:
 			while self.elapsedTime >= LOOP_MS_PF: # lag > time per update
 				if(self.elapsedTime >= (LOOP_MS_PF * 2)): # if multiple update frames this times
 					logging.warning("Lag Frame: {0:n} over {1:n}".format(self.elapsedTime - (LOOP_MS_PF * 2), LOOP_MS_PF * 2))
+				self.eventHandler.handle_events()
 				self.gameState.update() #TODO: Passing in update MS?
+				
 				self.elapsedTime -= LOOP_MS_PF # decrement the lag
 			
 			self.gameRenderer.render() #TODO: passing in leftover elapsed time over Render MS for % for render extrapolation

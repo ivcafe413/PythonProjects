@@ -1,9 +1,10 @@
 import pygame
+from pygame.locals import *
 
 import Config as c
 from GameObject import GameObject
 
-class Vagrant(GameObject): #Subclass definition
+class Player(GameObject): #Subclass definition
 	def __init__(self, x, y, w, h, color, speed):
 		GameObject.__init__(self, x, y, w, h)
 		self.color = color
@@ -17,13 +18,13 @@ class Vagrant(GameObject): #Subclass definition
 		pygame.draw.rect(surface, self.color, self.bounds)
 		
 	def handle(self, key):
-		if key == pygame.K_LEFT:
+		if key == K_LEFT:
 			self.moving_left = not self.moving_left
-		elif key == pygame.K_RIGHT:
+		elif key == K_RIGHT:
 			self.moving_right = not self.moving_right
-		elif key == pygame.K_UP:
+		elif key == K_UP:
 			self.moving_up = not self.moving_up
-		else:
+		else: #K_DOWN
 			self.moving_down = not self.moving_down
 			
 	def update(self):
