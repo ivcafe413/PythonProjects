@@ -66,8 +66,9 @@ class GameRunner:
 		while True:
 			self.elapsedTime += self.runnerClock.get_time()
 			# if self.elapsedTime >= (self.RENDER_MS_PF):
+			# --> Update Time
 			
-			self.handle_events()
+			self.handle_events() # --> Process event queue
 			
 			#possibility of variable update time frame to 'learn' and balance update speed real-time
 			# if not self.state.paused:
@@ -76,6 +77,7 @@ class GameRunner:
 					logging.warning("Lag Frame: {0:n} over {1:n}".format(self.elapsedTime - LOOP_MS_PF, LOOP_MS_PF))
 				self.gameState.update() #TODO: Passing in update MS?
 				self.elapsedTime -= LOOP_MS_PF
+			# --> Determine time passed, run updates
 			
 			self.gameRenderer.render() #TODO: passing in leftover elapsed time over Render MS for % for render extrapolation
 			self.clockFrame()
